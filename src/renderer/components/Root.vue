@@ -27,24 +27,20 @@
             <el-dropdown-item>Delete</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>Tom</span>
       </el-header>
 
       <el-main>
-        <el-table :data="tableData">
-          <el-table-column prop="date" label="Date" width="140" />
-          <el-table-column prop="name" label="Name" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="Address">
-          </el-table-column>
-        </el-table>
+        <video-list :data="list" height="100%" style="width: 100%" />
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+import VideoList from './VideoList';
+
 export default {
+  components: { VideoList },
   data() {
     const item = {
       date: '2016-05-02',
@@ -54,6 +50,11 @@ export default {
     return {
       tableData: Array(20).fill(item),
     };
+  },
+  computed: {
+    list() {
+      return this.$store.state.Video.list;
+    },
   },
 };
 </script>
