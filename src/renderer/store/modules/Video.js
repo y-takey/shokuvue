@@ -27,6 +27,7 @@ const getVideos = (keyword = '') => {
 };
 
 const state = {
+  dirPath: dirPath.value,
   list: getVideos(),
   currentKey: '',
   searchKey: '',
@@ -43,6 +44,9 @@ const mutations = {
   changeKeyword(state, value) {
     state.searchKey = value;
     state.list = getVideos(value);
+  },
+  clearCurrentKey() {
+    state.currentKey = null;
   },
 };
 

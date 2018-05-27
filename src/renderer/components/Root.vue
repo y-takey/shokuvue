@@ -25,6 +25,9 @@
       <el-main>
         <video-list :data="list" height="100%" style="width: 100%" />
       </el-main>
+      <el-footer height="300px" v-if="selectedTitle">
+        <VideoPanel :title="selectedTitle" />
+      </el-footer>
     </el-container>
   </el-container>
 </template>
@@ -32,9 +35,10 @@
 <script>
 import VideoList from './VideoList';
 import Header from './Header/Header';
+import VideoPanel from './VideoPanel';
 
 export default {
-  components: { VideoList, Header },
+  components: { VideoList, Header, VideoPanel },
   data() {
     const item = {
       date: '2016-05-02',
@@ -48,6 +52,9 @@ export default {
   computed: {
     list() {
       return this.$store.state.Video.list;
+    },
+    selectedTitle() {
+      return this.$store.state.Video.currentKey;
     },
   },
 };
