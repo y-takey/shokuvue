@@ -1,4 +1,5 @@
 import path from 'path';
+import _ from 'lodash';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 
@@ -18,11 +19,17 @@ const dirPath = db
   .find({ key: 'dirPath' })
   .value();
 
-const videos = db.get(dirPath.value).value();
+const getVideos = (keyword = '') => {
+  const base = db.get(dirPath.value);
+  if (_.isEmpty(keyword)) return base.value();
+
+  return base.filter(video => _.includes(video.name, keyword)).value();
+};
 
 const state = {
-  list: videos,
+  list: getVideos(),
   currentKey: '',
+  searchKey: '',
 };
 
 const mutations = {
@@ -32,6 +39,10 @@ const mutations = {
     } else {
       state.currentKey = item.name;
     }
+  },
+  changeKeyword(state, value) {
+    state.searchKey = value;
+    state.list = getVideos(value);
   },
 };
 
