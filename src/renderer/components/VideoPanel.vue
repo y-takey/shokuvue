@@ -16,6 +16,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import videojs from 'video.js';
+import 'videojs-hotkeys';
 import 'video.js/dist/video-js.css';
 // custom skin css
 import './custom-theme.css';
@@ -67,14 +68,42 @@ export default {
   methods: {
     ...mapMutations(['clearCurrentKey']),
     initialize() {
-      // avoid error "VIDEOJS: ERROR: Unable to find plugin: __ob__"
-      // if (videoOptions.plugins) {
-      //   delete videoOptions.plugins.__ob__
-      // }
-
       this.player = videojs(this.$refs.video, videoOptions, () => {
         this.player.on('timeupdate', () => {
           console.log('timeupdate', this.player.currentTime());
+        });
+      });
+      this.player.ready(() => {
+        this.player.hotkeys({
+          seekStep: 10,
+          alwaysCaptureHotkeys: true,
+          enableVolumeScroll: false,
+          volumeUpKey() {
+            return false;
+          },
+          volumeDownKey() {
+            return false;
+          },
+          customKeys: {
+            bookmarkKey: {
+              key(event) {
+                return event.which === 66;
+              },
+              handler() {
+                // args: player, options, event
+                console.log('bookmarkKey');
+              },
+            },
+            nextBookmarkKey: {
+              key(event) {
+                return event.which === 40;
+              },
+              handler() {
+                // args: player, options, event
+                console.log('nextBookmarkKey');
+              },
+            },
+          },
         });
       });
     },
