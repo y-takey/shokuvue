@@ -3,7 +3,8 @@ import _ from 'lodash';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 
-const { app } = require('electron').remote;
+const { app } = require('electron').remote; // eslint-disable-line
+
 let dbFilename;
 if (process.env.NODE_ENV === 'development') {
   dbFilename = './db.json';
@@ -14,17 +15,17 @@ if (process.env.NODE_ENV === 'development') {
 const adapter = new FileSync(dbFilename);
 const db = low(adapter);
 
-const dirPath = db
-  .get('config')
-  .find({ key: 'dirPath' })
-  .value();
+const dirPath = { key: 'dmy', value: '/path/to/any' };
+// const dirPath = db
+//   .get('config')
+//   .find({ key: 'dirPath' })
+//   .value();
 
-const getVideos = (keyword = '') => {
-  const base = db.get(dirPath.value);
-  if (_.isEmpty(keyword)) return base.value();
-
-  return base.filter(video => _.includes(video.name, keyword)).value();
-};
+const getVideos = (keyword = '') => [];
+// const base = db.get(dirPath.value);
+// if (_.isEmpty(keyword)) return base.value();
+//
+// return base.filter(video => _.includes(video.name, keyword)).value();
 
 const state = {
   dirPath: dirPath.value,
